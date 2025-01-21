@@ -31,7 +31,7 @@ function ShortenUrl() {
 
     axios
       .post(
-        "http://localhost:3010/api/short",
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/api/short`,
         { longUrl, customAlias ,topic},
         {
           headers: {
@@ -108,11 +108,16 @@ function RedirectHandler() {
     const os = navigator.platform; // Get user's operating system
     const device = navigator.userAgent; // Get user's device
 
+    console.log('@@ Alias ',alias)
+    console.log('backend ',process.env )
+
+    console.log('backend url', process.env.REACT_APP_BACKEND_BASE_URL )
+
     axios
-      .get(`http://localhost:3010/api/${alias}`)
+      .get(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/${alias}`)
       .then((res) => {
         // Send analytics data to backend when redirect happens
-        axios.post("http://localhost:3010/api/analytics", {
+        axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/analytics`, {
           alias,
           os,
           device,

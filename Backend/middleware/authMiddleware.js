@@ -1,10 +1,31 @@
 const firebase = require('firebase-admin');
 const serviceAccount = require('./serviceAccountKey.json');
 const User = require('../models/User');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const fs = require('fs');
+
+// Read the JSON template file
+const template = fs.readFileSync('./middleware/serviceAccountkey.json', 'utf8');
+
+// Replace placeholders with environment variables
+const replaced = template.replace(/\$\{(\w+)\}/g, (_, variable) => {
+  const value = process.env[variable];
+  if (!value) {
+    throw new Error(`Missing environment variable: ${variable}`);
+  }
+  return value;
+});
+
+// Parse the replaced JSON
+const serviceAccountConfig = JSON.parse(replaced);
+
 
 
 const defaultApp = firebase.initializeApp({
-    credential: firebase.credential.cert(serviceAccount),
+    credential: firebase.credential.cert(serviceAccountConfig),
 });
 
 const preauthMiddleware = async (req, res, next) => {

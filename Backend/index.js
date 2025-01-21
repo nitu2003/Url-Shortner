@@ -6,7 +6,6 @@ const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const {mongooseConnect} = require('./config/mongoConfig');
-const authRoutes = require('./routes/authRoutes');
 const urlRoutes = require('./routes/urlRoutes');
 const {redisClient} = require('./config/redisConfig');
 const dotenv = require('dotenv');
@@ -17,6 +16,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
+
+
+// Use `serviceAccountConfig` in y
 
 // Rate Limiter
 const limiter = rateLimit({
@@ -50,7 +52,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
   app.use("/api",require("./routes/urlRoutes"))
-  app.use('/api/auth', authRoutes);
 
   app.listen(3010,()=> console.log("server is running on 3010"))
 })();
