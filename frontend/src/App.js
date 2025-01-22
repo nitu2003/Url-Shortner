@@ -142,7 +142,9 @@ function RedirectHandler() {
 
 // Main App component
 const App = () => {
-
+if(!window.localStorage.getItem("auth-token")){
+   window.location.href = "/login"
+}
   const handleLoginSuccess = (data) => {
     console.log("Login Successful:", data);
     window.localStorage.setItem("auth-token", data.idToken);
@@ -155,7 +157,7 @@ const App = () => {
     <Router> {/* Ensure Router is wrapping the entire application */}
       <div>
         <header className="bg-blue-600 text-white p-4">
-          <h1 className="text-center text-2xl">URL Shortener with Google Login</h1>
+          <h1 className="text-center text-2xl">URL Shortener </h1>
         </header>
         <main>
           <Routes>
